@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackMarket Tools | Professional Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff41;
+            --secondary: #0d0d0d;
+            --dark: #000000;
+            --gray: #1a1a1a;
+            --text: #00ff41;
+            --text-dim: #008f11;
+            --danger: #ff0000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+            z-index: -1;
+            opacity: 0.9;
+        }
+        
+        .matrix-bg::before {
+            content: '01010101010101010101010101010101010101010101010101';
+            position: absolute;
+            top: -50%;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 20px;
+            color: rgba(0, 255, 65, 0.03);
+            word-wrap: break-word;
+            animation: matrix-scroll 20s linear infinite;
+        }
+        
+        @keyframes matrix-scroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50%); }
+        }
+        
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 2px solid var(--primary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+            letter-spacing: 2px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+        
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(0,255,65,0.1) 0%, rgba(0,0,0,0) 100%);
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px var(--primary);
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px var(--primary); }
+            50% { text-shadow: 0 0 30px var(--primary), 0 0 40px var(--primary); }
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .warning-banner {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid var(--danger);
+            padding: 1rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            border-radius: 5px;
+        }
+        
+        .warning-banner p {
+            color: var(--danger);
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .product-card {
+            background: var(--gray);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,65,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 255, 65, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .product-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--danger);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .product-badge.hot {
+            background: var(--primary);
+            color: var(--dark);
+        }
+        
+        .product-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .product-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .product-card p {
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .product-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .product-features li {
+            padding: 0.5rem 0;
+            color: var(--text);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .product-features li::before {
+            content: '▸';
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .product-price span {
+            font-size: 1rem;
+            color: var(--text-dim);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            background: var(--text);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .feature-box {
+            background: var(--gray);
+            border: 1px solid var(--text-dim);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .feature-box:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-box h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .feature-box p {
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        
+        footer {
+            background: var(--secondary);
+            border-top: 2px solid var(--primary);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-section a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--text-dim);
+            color: var(--text-dim);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: var(--gray);
+            border: 2px solid var(--primary);
+            margin: 5% auto;
+            padding: 3rem;
+            max-width: 900px;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .close {
+            color: var(--text-dim);
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: var(--primary);
+        }
+        
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+        
+        .modal p {
+            color: var(--text-dim);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        
+        .modal h3 {
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .modal ul {
+            margin-left: 2rem;
+            color: var(--text-dim);
+        }
+        
+        .modal ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .products-grid { grid-template-columns: 1fr; }
+            nav ul { flex-direction: column; gap: 1rem; }
+            .header-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    
+    <header>
+        <div class="header-container">
+            <div class="logo">◈ BLACKMARKET TOOLS ◈</div>
+            <nav>
+                <ul>
+                    <li><a href="#productos">Productos</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#soporte">Soporte</a></li>
+                    <li><a href="#" onclick="openModal('privacidad')">Privacidad</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <h1>BLACKMARKET TOOLS</h1>
+        <p>// Suite profesional para operaciones avanzadas //</p>
+        <div class="warning-banner">
+            <p>⚠ ACCESO RESTRINGIDO - Solo usuarios verificados</p>
+        </div>
+    </section>
+    
+    <div class="container" id="productos">
+        <h2 class="section-title">Catálogo Profesional</h2>
+        
+        <div class="products-grid">
+            <div class="product-card">
+                <span class="product-badge hot">POPULAR</span>
+                <div class="product-content">
+                    <div class="product-icon">💾</div>
+                    <h3>Database Collection</h3>
+                    <p>Colección actualizada de bases de datos. Millones de registros verificados organizados por sector e industria.</p>
+                    <ul class="product-features">
+                        <li>50M+ registros verificados</li>
+                        <li>Actualización semanal</li>
+                        <li>Múltiples formatos</li>
+                        <li>Clasificación por industria</li>
+                        <li>Validación incluida</li>
+                    </ul>
+                    <div class="product-price">$450 <span>BTC/XMR</span></div>
+                    <button class="btn">Adquirir</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <span class="product-badge">NUEVO</span>
+                <div class="product-content">
+                    <div class="product-icon">🔐</div>
+                    <h3>Advanced RAT</h3>
+                    <p>Herramienta de acceso remoto con características avanzadas de persistencia y evasión.</p>
+                    <ul class="product-features">
+                        <li>Totalmente indetectable</li>
+                        <li>Captura de datos</li>
+                        <li>Control remoto completo</li>
+                        <li>Múltiples protocolos</li>
+                        <li>Soporte incluido 6 meses</li>
+                    </ul>
+                    <div class="product-price">$850 <span>BTC/XMR</span></div>
+                    <button class="btn">Adquirir</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-content">
+                    <div class="product-icon">🌐</div>
+                    <h3>Phishing Kit Pro</h3>
+                    <p>Suite completa con plantillas premium para múltiples plataformas y servicios.</p>
+                    <ul class="product-features">
+                        <li>200+ plantillas profesionales</li>
+                        <li>Protección anti-detección</li>
+                        <li>Panel administrativo</li>
+                        <li>Captura avanzada</li>
+                        <li>Documentación completa</li>
+                    </ul>
+                    <div class="product-price">$650 <span>BTC/XMR</span></div>
+                    <button class="btn">Adquirir</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <span class="product-badge hot">PREMIUM</span>
+                <div class="product-content">
+                    <div class="product-icon">🎯</div>
+                    <h3>Exploit Bundle</h3>
+                    <p>Colección de exploits verificados para múltiples plataformas y aplicaciones.</p>
+                    <ul class="product-features">
+                        <li>15+ exploits funcionales</li>
+                        <li>Multi-plataforma</li>
+                        <li>Código fuente incluido</li>
+                        <li>Documentación técnica</li>
+                        <li>Updates regulares</li>
+                    </ul>
+                    <div class="product-price">$1,200 <span>BTC/XMR</span></div>
+                    <button class="btn">Adquirir</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-content">
+                    <div class="product-icon">🔓</div>
+                    <h3>Credential Harvester</h3>
+                    <p>Extracción especializada de credenciales de navegadores y aplicaciones.</p>
+                    <ul class="product-features">
+                        <li>Todos los navegadores</li>
+                        <li>Gestores de contraseñas</li>
+                        <li>Billeteras digitales</li>
+                        <li>Tokens de sesión</li>
+                        <li>Transmisión automática</li>
+                    </ul>
+                    <div class="product-price">$550 <span>BTC/XMR</span></div>
+                    <button class="btn">Adquirir</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-content">
+                    <div class="product-icon">📱</div>
+                    <h3>Mobile Suite</h3>
+                    <p>Solución completa para dispositivos móviles con monitoreo avanzado.</p>
+                    <ul class="product-features">
+                        <li>Android e iOS</li>
+                        <li>Acceso completo a datos</li>
+                        <li>Geolocalización real-time</li>
+                        <li>Captura multimedia</li>
+                        <li>Panel web incluido</li>
+                    </ul>
+                    <div class="product-price">$750 <span>BTC/XMR</span></div>
+                    <button class="btn">Adquirir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container" id="servicios">
+        <h2 class="section-title">Servicios</h2>
+        
+        <div class="features">
+            <div class="feature-box">
+                <div class="feature-icon">🛡️</div>
+                <h4>Privacidad Total</h4>
+                <p>Transacciones anónimas procesadas mediante criptomonedas. Sin registros ni trazabilidad.</p>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">⚡</div>
+                <h4>Entrega Inmediata</h4>
+                <p>Acceso instantáneo tras confirmación. Sin demoras en productos digitales.</p>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">🔄</div>
+                <h4>Actualizaciones</h4>
+                <p>Mantenimiento regular de herramientas para máxima efectividad.</p>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">💬</div>
+                <h4>Soporte 24/7</h4>
+                <p>Asistencia disponible mediante canales seguros. Respuesta garantizada.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container" id="soporte">
+        <h2 class="section-title">Contacto</h2>
+        <div style="text-align: center; max-width: 700px; margin: 0 auto;">
+            <p style="color: var(--text-dim); line-height: 1.8; margin-bottom: 2rem;">
+                Para consultas técnicas, ventas o soporte, utilice nuestros canales seguros:
+            </p>
+            <div style="background: var(--gray); padding: 2rem; border: 1px solid var(--primary); border-radius: 10px;">
+                <p style="margin-bottom: 1rem;"><strong>Telegram:</strong> @blackmarket_support</p>
+                <p style="margin-bottom: 1rem;"><strong>XMPP:</strong> support@bmtools.onion</p>
+                <p><strong>Email:</strong> contact@bmtools.onion</p>
+            </div>
+            <p style="color: var(--text-dim); margin-top: 2rem; font-size: 0.9rem;">
+                ⚠ Comunicaciones encriptadas obligatorias (PGP/GPG)
+            </p>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#" onclick="openModal('terminos')">Términos</a></li>
+                    <li><a href="#" onclick="openModal('privacidad')">Privacidad</a></li>
+                    <li><a href="#" onclick="openModal('faq')">FAQ</a></li>
+                    <li><a href="#">Guía</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Productos</h3>
+                <ul>
+                    <li><a href="#">Malware</a></li>
+                    <li><a href="#">Kits</a></li>
+                    <li><a href="#">Exploits</a></li>
+                    <li><a href="#">Bases de Datos</a></li>
+                    <li><a href="#">Custom</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Pagos</h3>
+                <ul>
+                    <li>₿ Bitcoin</li>
+                    <li>🔒 Monero</li>
+                    <li>⚡ Ethereum</li>
+                    <li>💎 Litecoin</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Seguridad</h3>
+                <ul>
+                    <li><a href="#">PGP Keys</a></li>
+                    <li><a href="#">Escrow</a></li>
+                    <li><a href="#">2FA</a></li>
+                    <li><a href="#">Canary</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>◈ BLACKMARKET TOOLS © 2024 ◈</p>
+            <p style="margin-top: 0.5rem;">Acceso exclusivo vía TOR</p>
+        </div>
+    </footer>
+    
+    <div id="privacidadModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('privacidad')">&times;</span>
+            <h2>Política de Privacidad</h2>
+            
+            <h3>1. Recopilación de Información</h3>
+            <p>Este servicio no recopila información personal identificable. Todas las transacciones se procesan de forma completamente anónima mediante criptomonedas. No se almacenan direcciones IP, logs de sesión ni ningún tipo de información que pueda identificar a los usuarios.</p>
+            
+            <h3>2. Transacciones y Pagos</h3>
+            <p>Únicamente aceptamos pagos en criptomonedas (Bitcoin, Monero, Ethereum, Litecoin). No se almacena información de billeteras ni direcciones una vez completadas las transacciones. Recomendamos el uso de Monero (XMR) para máxima privacidad.</p>
+            
+            <h3>3. Comunicaciones</h3>
+            <p>Todas las comunicaciones con el servicio de soporte deben realizarse mediante canales encriptados end-to-end utilizando PGP/GPG. No se responderán comunicaciones no encriptadas por motivos de seguridad operacional.</p>
+            
+            <h3>4. Cookies y Rastreo</h3>
+            <p>Este sitio no utiliza cookies, analytics, trackers ni cualquier tecnología de seguimiento. La navegación es completamente anónima y no se registra actividad alguna.</p>
+            
+            <h3>5. Datos de Terceros</h3>
+            <p>No compartimos, vendemos, alquilamos ni distribuimos información a terceros bajo ninguna circunstancia. La privacidad del usuario es la máxima prioridad del servicio.</p>
+            
+            <h3>6. Seguridad Operacional</h3>
+            <p>Implementamos medidas de seguridad de nivel militar incluyendo:</p>
+            <ul>
+                <li>Cifrado end-to-end en todas las comunicaciones</li>
+                <li>Servidores distribuidos en jurisdicciones offshore</li>
+                <li>Protocolos de destrucción automática de logs</li>
+                <li>Infraestructura de red redundante y descentralizada</li>
+                <li>Sistemas de detección de intrusiones avanzados</li>
+            </ul>
+            
+            <h3>7. Retención de Datos</h3>
+            <p>No se retienen datos de ningún tipo. Todos los registros temporales se eliminan automáticamente cada 24 horas. Operamos bajo una estricta política de cero logs.</p>
+            
+            <h3>8. Jurisdicción Legal</h3>
+            <p>Este servicio opera fuera de cualquier jurisdicción legal convencional. Los servidores están distribuidos globalmente en múltiples países con leyes de privacidad estrictas y sin acuerdos de cooperación internacional.</p>
+            
+            <h3>9. Transparencia</h3>
+            <p>Nunca hemos recibido ni cumpliremos con solicitudes de gobiernos, agencias de inteligencia o cualquier autoridad. Publicamos un "warrant canary" actualizado mensualmente como garantía.</p>
+            
+            <h3>10. Contacto y Consultas</h3>
+            <p>Para consultas relacionadas con privacidad, seguridad o aspectos técnicos del servicio, puede contactar mediante los siguientes medios:</p>
+            <ul>
+                <li><strong>Email encriptado:</strong> phishbroker@proton.me</li>
+                <li><strong>Dominio de contacto técnico:</strong> enumeretrix.site</li>
+                <li><strong>Sitio web del administrador:</strong> enumeretrix.site (Portfolio profesional)</li>
+                <li><strong>XMPP/Jabber:</strong> support@bmtools.onion</li>
+            </ul>
+            
+            <h3>11. Infraestructura Técnica</h3>
+            <p>El servicio mantiene su infraestructura técnica separada de cualquier servicio público. Para verificaciones técnicas, validaciones de autenticidad o reportes de seguridad, puede contactar al administrador técnico responsable:</p>
+            <ul>
+                <li><strong>Email:</strong> phishbroker@proton.me</li>
+                <li><strong>Sitio web:</strong> enumeretrix.site</li>
+                <li><strong>Dominio verificado:</strong> enumeretrix.site</li>
+            </ul>
+            <p>El dominio <strong>enumeretrix.site</strong> es operado por el mismo administrador técnico y puede utilizarse para verificar la autenticidad del servicio y realizar consultas técnicas avanzadas.</p>
+            
+            <h3>12. Cambios en la Política</h3>
+            <p>Esta política puede actualizarse sin previo aviso. Se recomienda revisar periódicamente. La fecha de última actualización se indica al final de este documento.</p>
+            
+            <h3>13. Aceptación</h3>
+            <p>Al utilizar este servicio, usted acepta completamente esta política de privacidad y comprende los riesgos asociados con el uso de plataformas de este tipo.</p>
+            
+            <p style="margin-top: 3rem; font-size: 0.85rem; color: var(--text-dim); font-style: italic;">
+                Última actualización: Febrero 2024<br>
+                Contacto técnico: phishbroker@proton.me<br>
+                Dominio administrador: enumeretrix.site
+            </p>
+        </div>
+    </div>
+    
+    <div id="terminosModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('terminos')">&times;</span>
+            <h2>Términos de Servicio</h2>
+            
+            <h3>1. Aceptación</h3>
+            <p>Al acceder a este mercado, usted acepta estar vinculado por estos términos. Si no está de acuerdo, no utilice el servicio.</p>
+            
+            <h3>2. Uso Autorizado</h3>
+            <p>Este servicio está destinado a profesionales de seguridad, investigadores autorizados y usuarios con fines legítimos de prueba en entornos controlados.</p>
+            
+            <h3>3. Responsabilidad</h3>
+            <p>Los usuarios son completamente responsables del uso de productos adquiridos. El servicio no se hace responsable del uso indebido de las herramientas.</p>
+            
+            <h3>4. Transacciones</h3>
+            <p>Todas las ventas son finales. No se procesan reembolsos bajo ninguna circunstancia debido a la naturaleza digital e instantánea de las entregas.</p>
+            
+            <h3>5. Garantías</h3>
+            <p>Los productos se entregan "tal cual". Se proporciona soporte técnico para problemas de funcionamiento, no se garantizan resultados específicos.</p>
+            
+            <h3>6. Confidencialidad</h3>
+            <p>Está estrictamente prohibido: compartir accesos, revender sin autorización, realizar ingeniería inversa o distribuir públicamente las herramientas.</p>
+        </div>
+    </div>
+    
+    <div id="faqModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('faq')">&times;</span>
+            <h2>Preguntas Frecuentes</h2>
+            
+            <h3>¿Cómo comprar?</h3>
+            <p>Seleccione el producto, proceda al pago mediante criptomoneda y reciba acceso inmediato tras confirmación.</p>
+            
+            <h3>¿Qué métodos de pago?</h3>
+            <p>Bitcoin, Monero (recomendado), Ethereum y Litecoin. Solo criptomonedas.</p>
+            
+            <h3>¿Hay garantía?</h3>
+            <p>Soporte técnico según producto. No hay reembolsos por la naturaleza digital.</p>
+            
+            <h3>¿Los productos funcionan?</h3>
+            <p>Todos probados antes de publicación. Incluye demos para productos premium.</p>
+            
+            <h3>¿Es seguro?</h3>
+            <p>Máxima seguridad: cifrado e2e, servidores offshore, transacciones anónimas.</p>
+        </div>
+    </div>
+    
+    <script>
+        function openModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'block';
+        }
+        
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.textContent === 'Adquirir') {
+                    e.preventDefault();
+                    alert('Contacte mediante canales seguros:\n\nTelegram: @blackmarket_support\nEmail: contact@bmtools.onion\n\nPGP requerido');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
